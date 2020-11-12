@@ -8,6 +8,9 @@
       $('#fps').val(`${faceapi.utils.round(1000 / avgTimeInMs)}`)
     }
 
+
+
+
     async function onPlay() {
       const videoEl = $('#inputVideo').get(0)
 
@@ -31,13 +34,16 @@
         flappy.y(result.box.y + result.box.height / 2);
         layer.batchDraw();
         //console.log("x: " + result.box.x + "y: " + result.box.y);
+
+        if(flappyIsLookingForStartButton) {
+            if(checkIfFlappyHitStartButton(startButton))
+              transitionFromWelcomeToGame();
+        }
+ 
       }
 
       setTimeout(() => onPlay())
     }
-
-      var videoWidth;
-      var videoHeight;
 
     async function runFaceDetection() {
       // load face detection model
@@ -49,10 +55,12 @@
 
 
 
-      if(false && window.matchMedia("(orientation: portrait").matches) 
-        { videoWidth = window.innerHeight; videoHeight = window.innerWidth;}
-      else 
-        { videoWidth = window.innerWidth; videoHeight = window.innerHeight;}
+      //if(false && window.matchMedia("(orientation: portrait").matches) 
+      //  { videoWidth = window.innerHeight; videoHeight = window.innerWidth;}
+      //else 
+        //{ 
+          videoWidth = window.innerWidth; videoHeight = window.innerHeight;
+          //}
 
 
       const stream = await navigator.mediaDevices.getUserMedia(
@@ -63,6 +71,10 @@
       sizeGame();
       //videoEl.addEventListener('playing', startGame );
       videoEl.addEventListener('playing', startWelcome);
+      const dims = faceapi.matchDimensions(canvas, videoEl, true)
+      videoHeight = dims.height;
+      videoWidth = dims.width;
+
 
       // startGame();
     }

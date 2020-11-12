@@ -56,7 +56,8 @@
 
       var windowWidth = window.innerWidth;
       var windowHeight = window.innerHeight;
-
+      var videoWidth;
+      var videoHeight;
     
 
       
@@ -84,15 +85,17 @@
   */
         windowWidth = marginDiv.width;
         windowHeight = marginDiv.height;
+        videoWidth = windowWidth;
+        videoHeight = windowHeight;
 
       }   
       var layer = new Konva.Layer();
 
       stage.add(layer);
 
-      var layer2 = new Konva.Layer();
+      var layerWelcome = new Konva.Layer();
 
-      stage.add(layer2);
+      stage.add(layerWelcome);
 
       // Set up Flappy 
       var flappyY = 50;
