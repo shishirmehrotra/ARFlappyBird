@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="https://unpkg.com/konva@7.1.3/konva.min.js">	</script>
+	<script src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js">	</script>
+	<script src="js/faceDetectionControls.js">	</script>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js">	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js">	</script>
+	<script src="https://unpkg.com/konva@7.1.3/konva.min.js">	</script>
+  <script src="js/welcome.js">	</script>
+	<script src="js/pipe.js">	</script>
+	<script src="js/runGame.js">	</script>
+  <script src="js/runFaceDetection.js">	</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<meta charset="utf-8" />
+	<title>Flappy Bird</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			background-color: #ffffff;
+		}
+	</style>
+
+<!-- Appzi: Capture Insightful Feedback -->
+<script async src="https://w.appzi.io/w.js?token=8XFnN"></script>
+<!-- End Appzi -->
+
+</head>
+
+<body>
+	<video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
+	<canvas id="overlay"></canvas>
+	<div id="container">
+	</div>
+
+
+
+</body>
+
+<script>
+
+//    function updateResults() {}
+
+    $(document).ready(function() {
+      initFaceDetectionControls()
+      runFaceDetection()
+    })
+
+      var windowWidth = window.innerWidth;
+      var windowHeight = window.innerHeight;
+
+    
+
+      
+
+      var stage = new Konva.Stage({
+        container: 'container',
+        width: windowWidth,
+        height: windowHeight,
+      });
+       
+      window.sizeGame = function sizeGame() {
+
+        const marginDiv = $('#inputVideo').get(0).getBoundingClientRect();
+        windowWidth = marginDiv.width;
+        windowHeight = marginDiv.height;
+        stage.width(marginDiv.width);
+        stage.height(marginDiv.height);
+      /* stage.container().style.position = 'absolute';
+        stage.container().style.top = '0';
+        stage.container().style.left = '0';
+        stage.container().style.top   = marginDiv.top;
+        stage.container().style.left  = marginDiv.left + window.scrollX;
+        stage.container().style.width = marginDiv.width;
+        stage.container().style.height = marginDiv.height;
+  */
+        windowWidth = marginDiv.width;
+        windowHeight = marginDiv.height;
+
+      }   
+      var layer = new Konva.Layer();
+
+      stage.add(layer);
+
+      var layer2 = new Konva.Layer();
+
+      stage.add(layer2);
+
+      // Set up Flappy 
+      var flappyY = 50;
+      var flappyX = 0.25 * windowWidth;
+      var flappyW = 0.05 * windowWidth; // 42
+      var flappyH = 0.05 * windowHeight; // 35
+      var imageObj = new Image();
+      var flappy;
+      imageObj.onload = function () {
+        flappy = new Konva.Image({
+          x: 0.25*windowWidth,
+          y: flappyY,
+          image: imageObj,
+          width: flappyW,
+          height: flappyH,
+        });
+        layer.add(flappy);
+        layer.batchDraw();
+      };
+
+      imageObj.src = 'Squareyduck.png';
+
+      document.addEventListener("keydown", keyHandler, false);
+      function keyHandler(e) {
+        if(e.key == "Up" || e.key == "ArrowUp") {
+          flappy.y(flappy.y()-10);
+        }
+        else if(e.key == "Down" || e.key == "ArrowDown") {
+          flappy.y(flappy.y()+10);
+
+        }
+        //console.log("keyHandler" + flappy.y());
+        layer.batchDraw();
+
+      }
+</script>
+
+</html>
