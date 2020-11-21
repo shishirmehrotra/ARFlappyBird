@@ -29,7 +29,7 @@
       if (result) {
         const canvas = $('#overlay').get(0)
         const dims = faceapi.matchDimensions(canvas, videoEl, true)
-        faceapi.draw.drawDetections(canvas, faceapi.resizeResults(result, dims))
+        //faceapi.draw.drawDetections(canvas, faceapi.resizeResults(result, dims))
         flappy.x(result.box.x + result.box.width / 2);
         flappy.y(result.box.y + result.box.height / 2);
         layer.batchDraw();
@@ -71,6 +71,7 @@
       sizeGame();
       //videoEl.addEventListener('playing', startGame );
       videoEl.addEventListener('playing', startWelcome);
+      const canvas = $('#overlay').get(0)
       const dims = faceapi.matchDimensions(canvas, videoEl, true)
       videoHeight = dims.height;
       videoWidth = dims.width;

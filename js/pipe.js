@@ -17,7 +17,7 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
   this.hTop = yPercent*windowHeight;
   this.yBottom = (yPercent + gapPercent)*windowHeight;
   this.hBottom = windowHeight - this.yBottom; 
-  
+  this.isScored = false;
 
 // Create the rectangles for the pipes
 
@@ -88,6 +88,15 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
     this.topBase.x(this.topBase.x() - (distancePercent * windowWidth));
     this.topCap.x(this.topCap.x() - (distancePercent * windowWidth));
     this.drawPipe();
+
+    //Scoring
+    if(this.bottomBase.x() < 0 && this.isScored === false){
+      score += 10;
+      this.isScored = true;
+      scoreText.text("Score: " + score);
+      layer.batchDraw()
+    }
+
   }
 
 // Was this pipe hit?

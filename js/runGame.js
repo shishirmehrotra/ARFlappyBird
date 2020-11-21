@@ -1,5 +1,7 @@
 var timer;
 var pipes = [];
+var score = 0;
+var scoreText;
 
 function startGame() {
   window.sizeGame();
@@ -22,7 +24,19 @@ function startGame() {
                         pipeWidth));
   }
 
+  scoreText = new Konva.Text({
+    x: videoWidth - 150,
+    y: 50,
+    text:
+      "Score: " + score,
+    fontSize: 20,
+    fontFamily: 'Arial',
+    fill: '#ffffff',
+    width: 100,
+    align: 'center',
+  });
 
+  layer.add(scoreText);
 
 }
 
