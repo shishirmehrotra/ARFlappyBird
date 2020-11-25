@@ -81,6 +81,15 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
     layer.batchDraw();
   }
 
+
+  this.clearPipe = function() {
+    this.bottomBase.destroy();
+    this.bottomCap.destroy();
+    this.topBase.destroy();
+    this.topCap.destroy();
+    layer.batchDraw();
+  }
+
 // Move the pipe
   this.movePipe = function (distancePercent) {
     this.bottomBase.x(this.bottomBase.x() - (distancePercent * windowWidth));
@@ -90,7 +99,7 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
     this.drawPipe();
 
     //Scoring
-    if(this.bottomBase.x() < 0 && this.isScored === false){
+    if(this.bottomBase.x() < 0.25 * windowWidth && this.isScored === false){
       score += 10;
       this.isScored = true;
       scoreText.text("Score: " + score);
@@ -98,6 +107,7 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
     }
 
   }
+
 
 // Was this pipe hit?
 /*

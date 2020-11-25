@@ -7,6 +7,10 @@ function startGame() {
   window.sizeGame();
   var timeScale = 100;
 
+  layer.clear();
+
+  flappyIsLookingForStartButton = false;
+
   window.clearInterval(timer);
   timer = window.setInterval(nextGameStep, timeScale);
 
@@ -40,10 +44,73 @@ function startGame() {
 
 }
 
-function stopGame() {
-  window.clearInterval(timer);
+function transitionFromDeadToGame(){
+  flappyIsLookingForStartButton = false;
+  layerDead.clear();
+  layer.clear();
+  layerWelcome.clear();
+  startGame();
 }
 
+function clearAllPipes() {
+  pipes.forEach(pipe => {pipe.clearPipe();} );
+  pipes = [];
+}
+
+
+function stopGame() {
+  window.clearInterval(timer);
+
+  layer.clear();
+
+  flappyIsLookingForStartButton = true;
+
+  var diedText = new Konva.Text({
+    x: videoWidth/2,
+    y: videoHeight/2,
+    text:
+      "You Died",
+    fontSize: 100,
+    fontFamily: 'Arial',
+    fill: '#ffffff',
+    width: 500,
+    align: 'center',
+  }); 
+  
+  var restartButton = new Konva.Rect({
+    x: 0.25 * videoWidth,  
+    y: videoHeight/2,
+    width: 100,
+    height: 50,
+    fill: '#79A9CD',
+    stroke: 'black',
+    strokeWidth: 0,
+    cornerRadius: 10,
+  })
+
+    var restartButtonText = new Konva.Text({
+    x: 0.25 * videoWidth,
+    y: videoHeight/2 + 12.5,
+    text: "Restart",
+    fontSize: 24,
+    fontFamily: 'Arial',
+    fill: '#ffffff',
+    width: 100,
+    align:'center'
+    
+  }) 
+  layerDead.add(diedText);
+  layerDead.add(restartButton);
+  layerDead.add(restartButtonText);
+
+  clearAllPipes();
+  scoreText.destroy();
+
+  layerDead.batchDraw();
+
+  restartButton.on('click', transitionFromDeadToGame);
+  restartButtonText.on('click', transitionFromDeadToGame);
+}
 function nextGameStep() {
   // Move all the pipes to the left
   var pipeMove = 0.01;

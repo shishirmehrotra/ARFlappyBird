@@ -34,7 +34,7 @@ function startWelcome() {
     x: welcomeX,
     y: welcomeY + 80,
     text:
-      "Move the bird with your head to the start button.",
+      "Move your head to the start button then do pushups to stay in between the pipes.",
     fontSize: 25,
     fontFamily: 'Arial',
     fill: '#ffffff',
@@ -96,6 +96,8 @@ function transitionFromWelcomeToGame() {
   // Clear layerWelcome and start game 
   flappyIsLookingForStartButton = false;
   layerWelcome.clear();
+  layer.clear();
+  layerDead.clear();
   startGame();
 
 }
