@@ -100,10 +100,10 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
 
     //Scoring
     if(this.bottomBase.x() < 0.25 * windowWidth && this.isScored === false){
-      score += 10;
+      score += 10 * level;
       this.isScored = true;
-      scoreText.text("Score: " + score);
-      layer.batchDraw()
+      updateScore();
+
     }
 
   }

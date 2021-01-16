@@ -1,36 +1,39 @@
-var welcomeText;
+var instructionText;
 var welcomeX;
-var descriptionText;
+var instructionTextDetail;
 var buttonX;
 var buttonY;
 var startButton;
 var welcomeSize;
 var descriptionSize
 var startButton;
+var nextTransitionFunction = transitionFromWelcomeToGame;
+
 
 var flappyIsLookingForStartButton = false;
 
 function startWelcome() {
   window.sizeGame();
 
-  var welcomeX = videoWidth/2 - 350; 
+  var textWidth = 750;
+  var welcomeX = videoWidth/2 - textWidth/2; 
   var welcomeY = Math.round(videoHeight * 0.1);
   var buttonX = Math.round(videoWidth * 0.1) + 100;
   var buttonY = videoHeight/2;
 
-  var welcomeText = new Konva.Text({
+  instructionText = new Konva.Text({
     x: welcomeX,
     y: welcomeY,
     text:
       "Welcome",
-    fontSize: 72,
+    fontSize: 50,
     fontFamily: 'Arial',
     fill: '#ffffff',
-    width: 700,
+    width: textWidth,
     align: 'center',
   });
 
-  var descriptionText = new Konva.Text({
+  instructionTextDetail = new Konva.Text({
     x: welcomeX,
     y: welcomeY + 80,
     text:
@@ -38,14 +41,14 @@ function startWelcome() {
     fontSize: 25,
     fontFamily: 'Arial',
     fill: '#ffffff',
-    width: 700,
+    width: textWidth,
     align: 'center',
   });
 
   startButton = new Konva.Rect({
     x: buttonX,  
     y: buttonY,
-    width: 100,
+    width: 150,
     height: 50,
     fill: '#79A9CD',
     stroke: 'black',
@@ -53,20 +56,20 @@ function startWelcome() {
     cornerRadius: 10,
   });
 
-  var buttonText = new Konva.Text({
+  buttonText = new Konva.Text({
     x: buttonX,
     y: buttonY + 12.5,
     text: "Start",
     fontSize: 25,
     fontFamily: 'Arial',
     fill: '#ffffff',
-    width: 100,
+    width: 150,
     align:'center'
     
   }) 
 
-  layerWelcome.add(welcomeText);
-  layerWelcome.add(descriptionText);
+  layerWelcome.add(instructionText);
+  layerWelcome.add(instructionTextDetail);
   layerWelcome.add(startButton);
   layerWelcome.add(buttonText);
   layerWelcome.batchDraw();
@@ -93,11 +96,16 @@ function checkIfFlappyHitStartButton(startButton) {
 
 
 function transitionFromWelcomeToGame() {
+  if(flappyIsLookingForStartButton === false) return;
+
   // Clear layerWelcome and start game 
   flappyIsLookingForStartButton = false;
-  layerWelcome.clear();
+  startButton.on('click', null);
+  startButton.off('click');
+  buttonText.on('click', null);
+  buttonText.off('click');
+  layerWelcome.hide();
   layer.clear();
-  layerDead.clear();
   startGame();
 
 }

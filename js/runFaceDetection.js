@@ -37,7 +37,7 @@
 
         if(flappyIsLookingForStartButton) {
             if(checkIfFlappyHitStartButton(startButton))
-              transitionFromWelcomeToGame();
+              nextTransitionFunction();
         }
  
       }
