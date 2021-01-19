@@ -55,9 +55,14 @@ function startGame() {
 }
 
 function transitionFromDeadToGame(){
+  var x = document.getElementById("trying");
+  x.style.display = "none";
 
 // Ensure we don't retrigger this transition
-  if(flappyIsLookingForStartButton === false) return;
+  // CHANGED: don't look for bird any more
+  // if(flappyIsLookingForStartButton === false) return;
+
+
   flappyIsLookingForStartButton = false;
   startButton.on('click', null);  startButton.off('click');
   buttonText.on('click', null);   buttonText.off('click');
@@ -87,21 +92,27 @@ function stopGame() {
 
 // Set up the new messages and show them
   instructionText.text("Game over!");
-  instructionTextDetail.text("Your score is " + score + ". Try again by hitting the restart button!");
-  buttonText.text("Restart");
+  instructionTextDetail.text("Your score is " + score + ". Fill out the form to join the PlayAR leaderboard!");
+  buttonText.hide();
+  startButton.hide();
 
-  
-  
+  var x = document.getElementById("trying");
+  x.style.display = "block";
+  x.style.left = (welcomeX - 10) + "px";
+  x.style.top = (welcomeY + 200) + "px";
+  x.style.width = (textWidth) + "px";
 
   layerWelcome.show();
   layerWelcome.batchDraw();
 
 // Set up for flappy to find the button
-  flappyIsLookingForStartButton = true;
+  // CHANGED: Flappy bird isn't going to look for the start button any more
+  flappyIsLookingForStartButton = false;
   startButton.on('click', null);  startButton.off('click');
   buttonText.on('click', null);   buttonText.off('click');
-  startButton.on('click', transitionFromDeadToGame);
+  //startButton.on('click', transitionFromDeadToGame);
   buttonText.on('click', transitionFromDeadToGame);
+
   nextTransitionFunction = transitionFromDeadToGame;
 
 }
@@ -116,7 +127,10 @@ function nextLevel() {
 // Set up the new messages and show them
   instructionText.text("Great job!");
   instructionTextDetail.text("You finished level " + level + "! Ready for the next level?");
-  buttonText.text("Next Level")
+  buttonText.text("Next Level");
+  buttonText.show();
+  startButton.show();
+
   layerWelcome.show();
   layerWelcome.batchDraw();
 

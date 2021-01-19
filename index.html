@@ -15,6 +15,8 @@
 	<script src="js/pipe.js">	</script>
 	<script src="js/runGame.js">	</script>
   <script src="js/runFaceDetection.js">	</script>
+  <script src="https://cdn.coda.io/external/scratch/api-sdks/coda-browser-sdk-001.js">
+	</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
@@ -45,13 +47,28 @@
 
 </head>
 
+<script src="js/script.js"></script>
+<script src = "js/cssVariables.js"></script>
+
 <body>
-	<video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
-	<canvas id="overlay"></canvas>
-	<div id="container">
-	</div>
+    <video class = 'video' onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
+    <canvas  class = 'video' id="overlay"></canvas>
+    <div class = 'video' id="container">
+    </div>
+  <div class = 'video trying' id='trying'>
+    <form id="recordForm" method="post" target="hiddenFrame">
+			<h1 class = "formLabel">Name:</h1><input id="NameInput" class ="formInput" name="Name">
+      <h1 class = "formLabel">Email:</h1><input id="EmailInput" class ="formInput" type="email" name="Email" >
+      <h1 class = "formLabel">Feedback:</h1><input id="FeedbackInput" class ="formInput" name="Feedback" >
+    </form>
 
+    <div id="buttonRow">
+      <button id="submitButton" class = "formButton">Submit</button>
+      <button id="skipButton" class = "formButton">Skip</button>
+    </div>
+  </div>
 
+<script src = "js/form.js"></script>
 
 </body>
 

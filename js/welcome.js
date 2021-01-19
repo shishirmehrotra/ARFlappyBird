@@ -1,6 +1,9 @@
 var instructionText;
 var welcomeX;
+var welcomeY;
+var textWidth;
 var instructionTextDetail;
+var boxInstructionText;
 var buttonX;
 var buttonY;
 var startButton;
@@ -15,9 +18,10 @@ var flappyIsLookingForStartButton = false;
 function startWelcome() {
   window.sizeGame();
 
-  var textWidth = 750;
-  var welcomeX = videoWidth/2 - textWidth/2; 
-  var welcomeY = Math.round(videoHeight * 0.1);
+  //textWidth = 750; // RIYA - Change this to be a calculation
+  textWidth = videoWidth / 2;
+  welcomeX = videoWidth/2 - textWidth/2; 
+  welcomeY = Math.round(videoHeight * 0.1);
   var buttonX = Math.round(videoWidth * 0.1) + 100;
   var buttonY = videoHeight/2;
 
@@ -31,6 +35,18 @@ function startWelcome() {
     fill: '#ffffff',
     width: textWidth,
     align: 'center',
+
+  });
+
+  boxInstructionText = new Konva.Rect({
+    x: welcomeX -10,  
+    y: welcomeY -20,
+    width: textWidth + 20,
+    height: 180,
+    fill: '#79A9CD',
+    stroke: 'black',
+    strokeWidth: 0,
+    cornerRadius: 10,
   });
 
   instructionTextDetail = new Konva.Text({
@@ -68,6 +84,7 @@ function startWelcome() {
     
   }) 
 
+  layerWelcome.add(boxInstructionText); 
   layerWelcome.add(instructionText);
   layerWelcome.add(instructionTextDetail);
   layerWelcome.add(startButton);
