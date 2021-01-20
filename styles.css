@@ -83,7 +83,6 @@ input[type="file"]::-webkit-file-upload-button {
     cursor: pointer;
     color: #fff;
     border-radius: .2em;
-    !important;
 }
 
 /* Fortes New Stuff */
@@ -105,12 +104,14 @@ body video, body #container, body #overlay {
 }*/
 
 .video {
-  //width: 100%;
+  // width: 100%;
   //height: 100%;
-  position: absolute;
   //top: 0;
-  //left: 0;
+  //left: 0; 
+  position: absolute;
+  //object-fit: cover;
 }
+
 .trying {
   //width: 50%;
   height: 50%;
