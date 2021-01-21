@@ -9,14 +9,14 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
   this.widthPercent = widthPercent;
   
   // Both top and bottom pipes share these values
-  this.pipeWidth = widthPercent * windowWidth;
-  this.x = xPercent*windowWidth;
+  this.pipeWidth = widthPercent * stage.width();
+  this.x = xPercent*stage.width();
 
   // These values are different for the top and bottom pipe
   this.yTop = 0;
-  this.hTop = yPercent*windowHeight;
-  this.yBottom = (yPercent + gapPercent)*windowHeight;
-  this.hBottom = windowHeight - this.yBottom; 
+  this.hTop = yPercent*stage.height();
+  this.yBottom = (yPercent + gapPercent)*stage.height();
+  this.hBottom = stage.height() - this.yBottom; 
   this.isScored = false;
 
 // Create the rectangles for the pipes
@@ -38,7 +38,7 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
     x: this.x - 0.1*this.pipeWidth,
     y: this.yBottom,
     width: 1.2* this.pipeWidth,
-    height: 0.05 * windowHeight,
+    height: 0.05 * stage.height(),
     fillLinearGradientStartPoint: { x: -50, y: -50 },
     fillLinearGradientEndPoint: { x: 50, y: 50 },
     fillLinearGradientColorStops: [0, 'lime', 1, 'green'],
@@ -61,9 +61,9 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
 
   this.topCap = new Konva.Rect({
     x: this.x - 0.1*this.pipeWidth,
-    y: this.hTop - 0.05*windowHeight,
+    y: this.hTop - 0.05*stage.height(),
     width: 1.2*this.pipeWidth,
-    height: 0.05*windowHeight,
+    height: 0.05*stage.height(),
     fillLinearGradientStartPoint: { x: -50, y: -50 },
     fillLinearGradientEndPoint: { x: 50, y: 50 },
     fillLinearGradientColorStops: [0, 'lime', 1, 'green'],
@@ -92,14 +92,14 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
 
 // Move the pipe
   this.movePipe = function (distancePercent) {
-    this.bottomBase.x(this.bottomBase.x() - (distancePercent * windowWidth));
-    this.bottomCap.x(this.bottomCap.x() - (distancePercent * windowWidth));
-    this.topBase.x(this.topBase.x() - (distancePercent * windowWidth));
-    this.topCap.x(this.topCap.x() - (distancePercent * windowWidth));
+    this.bottomBase.x(this.bottomBase.x() - (distancePercent * stage.width()));
+    this.bottomCap.x(this.bottomCap.x() - (distancePercent * stage.width()));
+    this.topBase.x(this.topBase.x() - (distancePercent * stage.width()));
+    this.topCap.x(this.topCap.x() - (distancePercent * stage.width()));
     this.drawPipe();
 
     //Scoring
-    if(this.bottomBase.x() < 0.25 * windowWidth && this.isScored === false){
+    if(this.bottomBase.x() < 0.25 * stage.width() && this.isScored === false){
       score += 10 * level;
       this.isScored = true;
       updateScore();

@@ -7,17 +7,12 @@
 	<script src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js">	</script>
 	<script src="js/faceDetectionControls.js">	</script>
 	<link rel="stylesheet" href="styles.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js">	</script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js">	</script>
 	<script src="https://unpkg.com/konva@7.1.3/konva.min.js">	</script>
-  <script src="js/welcome.js">	</script>
-	<script src="js/pipe.js">	</script>
-	<script src="js/runGame.js">	</script>
-  <script src="js/runFaceDetection.js">	</script>
-  <script src="https://cdn.coda.io/external/scratch/api-sdks/coda-browser-sdk-001.js">
-	</script>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://cdn.coda.io/external/scratch/api-sdks/coda-browser-sdk-001.js">	</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 
 	<meta charset="utf-8" />
@@ -31,48 +26,66 @@
 		}
 	</style>
 
-<!-- Appzi: Capture Insightful Feedback -->
-<script async src="https://w.appzi.io/w.js?token=8XFnN"></script>
-<!-- End Appzi -->
+	<!-- Appzi: Capture Insightful Feedback -->
+	<script async src="https://w.appzi.io/w.js?token=8XFnN">
+	</script>
+	<!-- End Appzi -->
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BGTE1MCQTY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-BGTE1MCQTY">
+	</script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-BGTE1MCQTY');
-</script>
+
+	</script>
 
 </head>
 
 <script src="js/script.js"></script>
-<script src = "js/cssVariables.js"></script>
 
 <body>
-    <video class = 'video' onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
-    <canvas  class = 'video' id="overlay"></canvas>
-    <div class = 'video' id="container">
-    </div>
-  <div class = 'video trying' id='trying'>
-    <form id="recordForm" method="post" target="hiddenFrame">
-			<h1 class = "formLabel">Name:</h1><input id="NameInput" class ="formInput" name="Name">
-      <h1 class = "formLabel">Email:</h1><input id="EmailInput" class ="formInput" type="email" name="Email" >
-      <h1 class = "formLabel">Feedback:</h1><input id="FeedbackInput" class ="formInput" name="Feedback" >
-    </form>
+	<video class='video' onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
+	<canvas class='video' id="overlay"></canvas>
+	<div class='konvaContainer' id="konvaContainer">
+	</div>
+	<div class='instructions' id='instructions'>
 
-    <div id="buttonRow">
-      <button id="submitButton" class = "formButton">Submit</button>
-      <button id="skipButton" class = "formButton">Skip</button>
+		<div id = 'instructionTitle'>Welcome</div>
+		<div id = 'instructionDetailText'>Do pushups to stay in between the pipes. Press start to begin.</div>
+    <div id = 'instructionButtonDiv'>
+      <button id = 'instructionButton'>Start</button>
+    </div>    
+    <div class = 'scoreForm' id='scoreForm'>
+      <form id="recordForm" method="post" target="hiddenFrame">
+        <h1 class = "formLabel">Name:</h1><input id="NameInput" class ="formInput" name="Name">
+        <h1 class = "formLabel">Email:</h1><input id="EmailInput" class ="formInput" type="email" name="Email" >
+        <h1 class = "formLabel">Feedback:</h1><input id="FeedbackInput" class ="formInput" name="Feedback" >
+      </form>
+
+      <div id="buttonRow">
+        <button id="submitButton" class = "formButton">Submit</button>
+        <button id="skipButton" class = "formButton">Skip</button>
+      </div>
+      
     </div>
   </div>
+  <div id = "debug">Debug</div>
+  <script src="js/setup.js"></script>
+	<script src="js/welcome.js">	</script>
+	<script src="js/pipe.js">	</script>
+	<script src="js/runGame.js">	</script>
+	<script src="js/runFaceDetection.js">	</script>
 
 <script src = "js/form.js"></script>
 
 </body>
 
 <script>
+  
 
 //    function updateResults() {}
 
@@ -81,8 +94,10 @@
       runFaceDetection()
     })
 
-      var windowWidth = window.innerWidth;
-      var windowHeight = window.innerHeight;
+      //var windowWidth = window.innerWidth;
+      //var windowHeight = window.innerHeight;
+      var windowWidth = getComputedStyle(document.documentElement).width;
+      var windowHeight = getComputedStyle(document.documentElement).height;
       var videoWidth;
       var videoHeight;
     
@@ -90,32 +105,31 @@
       
 
       var stage = new Konva.Stage({
-        container: 'container',
+        container: 'konvaContainer',
         width: windowWidth,
         height: windowHeight,
       });
        
       window.sizeGame = function sizeGame() {
         
-        // I'm doing this below...
-        windowWidth = window.innerWidth;
-        windowHeight = window.innerHeight;
-        
+        //windowWidth = window.innerWidth;
+        //windowHeight = window.innerHeight;
+        //windowWidth = getComputedStyle(document.documentElement).width;
+        //windowHeight = getComputedStyle(document.documentElement).height;
+
         // New code from Fil
+        /*
         const videoEl = document.querySelector('#inputVideo');
         videoEl.style.cssText = `width:${windowWidth}px; height: ${windowHeight}px`;
         const overlayDiv = document.querySelector('#overlay');
         overlayDiv.style.cssText = `width:${windowWidth}px; height: ${windowHeight}px`;
+        */
 
-        stage.width(windowWidth);
-        stage.height(windowHeight);
 
-        const marginDiv = $('#inputVideo').get(0).getBoundingClientRect();
+        // MARGIN DIV APPROACH
+        //const marginDiv = $('#inputVideo').get(0).getBoundingClientRect();
         //windowWidth = marginDiv.width;
         //windowHeight = marginDiv.height;
-
-
-
         //stage.width(marginDiv.width);
         // stage.height(marginDiv.height);
 
@@ -129,39 +143,62 @@
   */
         //windowWidth = marginDiv.width;
         //windowHeight = marginDiv.height;
-        videoWidth = windowWidth;
-        videoHeight = windowHeight;
+
+        // Size everything to the video size
+        
+
+        // Set based on Window dimensions
+        // stage.width(windowWidth);
+        // stage.height(windowHeight);
+        // videoWidth = windowWidth;
+        // videoHeight = windowHeight;
+        
+        videoWidth = document.querySelector('#inputVideo').videoWidth;
+        videoHeight = document.querySelector('#inputVideo').videoHeight;
+        stage.width(Math.min(videoWidth, window.innerWidth));
+        stage.height(Math.min(videoHeight, window.innerHeight));
+        if (videoWidth > 0)  {instructions.style.width = Math.min(videoWidth, window.innerWidth) +"px" }
+        else                 {instructions.style.width = window.innerWidth + "px";}
+        
+        updateDebug();
 
       }   
+
+      document.querySelector('#inputVideo').addEventListener('resize', window.sizeGame);
+      window.onresize = window.sizeGame;
+
+
       var layer = new Konva.Layer();
 
       stage.add(layer);
 
-      var layerWelcome = new Konva.Layer();
-
-      stage.add(layerWelcome);
-
-      
+      //var layerWelcome = new Konva.Layer();
+      //stage.add(layerWelcome);
 
       // Set up Flappy 
       var flappyY = 50;
-      var flappyX = 0.25 * windowWidth;
-      var flappyW = 0.05 * windowWidth; // 42
-      var flappyH = 0.05 * windowHeight; // 35
+      var flappyX = 0.25 * window.innerWidth;
+      var flappyW = 0.05 * window.innerWidth; // 42
+      var flappyH = 0.05 * window.innerHeight; // 35
       var imageObj = new Image();
       var flappy;
+
+
+
       imageObj.onload = function () {
         flappy = new Konva.Image({
-          x: 0.25*windowWidth,
+          x: 0.25*window.innerWidth,
           y: flappyY,
           image: imageObj,
           width: flappyW,
           height: flappyH,
         });
+        //flappy.id('flappyID');
+        //var flappyEl = document.getElementById("flappyID");
+        //flappyEl.style.zIndex = "11";
         layer.add(flappy);
         layer.batchDraw();
       };
-
       imageObj.src = 'Squareyduck.png';
 
       document.addEventListener("keydown", keyHandler, false);

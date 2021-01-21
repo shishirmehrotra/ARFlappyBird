@@ -1,15 +1,14 @@
-var instructionText;
+//var instructionText;
 var welcomeX;
 var welcomeY;
 var textWidth;
-var instructionTextDetail;
-var boxInstructionText;
+//var instructionTextDetail;
+//var boxInstructionText;
 var buttonX;
 var buttonY;
 var startButton;
 var welcomeSize;
 var descriptionSize
-var startButton;
 var nextTransitionFunction = transitionFromWelcomeToGame;
 
 
@@ -25,6 +24,17 @@ function startWelcome() {
   var buttonX = Math.round(videoWidth * 0.1) + 100;
   var buttonY = videoHeight/2;
 
+  //set the html to right text
+  instructions.style.display = "block";
+  instructionTitle.style.display = "block";
+  instructionDetailText.style.display = "block";
+  instructionButton.style.display = "block";
+  instructionTitle.textContent = "Welcome to PlayAR!";
+  instructionDetailText.textContent = "The game that uses augmented reality to get you fit! Do pushups to keep Flappy between the pipes.";
+  instructionButton.textContent = "Start Playing";
+
+
+/*
   instructionText = new Konva.Text({
     x: welcomeX,
     y: welcomeY,
@@ -89,14 +99,15 @@ function startWelcome() {
   layerWelcome.add(instructionTextDetail);
   layerWelcome.add(startButton);
   layerWelcome.add(buttonText);
+
   layerWelcome.batchDraw();
 
 
   // Wait for start button to be hit - either by flappy bird or by click
 
-  flappyIsLookingForStartButton = true;
-  startButton.on('click', transitionFromWelcomeToGame);
-  buttonText.on('click', transitionFromWelcomeToGame);
+  flappyIsLookingForStartButton = true;*/
+  document.getElementById("instructionButton").onclick = transitionFromWelcomeToGame;
+  //buttonText.on('click', transitionFromWelcomeToGame);
 
   
 }
@@ -113,16 +124,19 @@ function checkIfFlappyHitStartButton(startButton) {
 
 
 function transitionFromWelcomeToGame() {
-  if(flappyIsLookingForStartButton === false) return;
-
-  // Clear layerWelcome and start game 
+  /*if(flappyIsLookingForStartButton === false) return;
   flappyIsLookingForStartButton = false;
-  startButton.on('click', null);
-  startButton.off('click');
+
+  instructionButton.on('click', null);
+  instructionButton.off('click');
   buttonText.on('click', null);
   buttonText.off('click');
-  layerWelcome.hide();
+  layerWelcome.hide();*/
   layer.clear();
+  layer.show();
+  instructions.style.display = "none";
+  instructionTitle.style.display = "none";
+  instructionDetailText.style.display = "none";
   startGame();
 
 }

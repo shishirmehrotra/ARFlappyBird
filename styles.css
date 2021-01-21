@@ -103,22 +103,82 @@ body video, body #container, body #overlay {
   height: 100vh;
 }*/
 
+#debug {
+  font-size: 60%;
+  //width: 100%;
+}
+
 .video {
   // width: 100%;
   //height: 100%;
   //top: 0;
   //left: 0; 
   position: absolute;
-  //object-fit: cover;
+  /*object-fit: cover;*/
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
-.trying {
+.instructions {
+  position: absolute;
+  text-align: center;
+}
+
+.konvaContainer {
+  position: absolute;
+
+}
+
+.scoreForm {
   //width: 50%;
   height: 50%;
   z-index: 9;
   //left: 25%;
   //top: 25%;
   display: none;
+}
+
+.instructions {
+  //width: 50%;
+  //height: 50%;
+  z-index: 8;
+  //left: 25%;
+  //top: 25%;
+  display: none;
+  width: 100%;
+}
+
+#instructionTitle {
+  font-size: 300%;
+  color: #ffffff;
+  font-weight: bold;
+  margin-top: 5%;
+}
+
+#instructionDetailText {
+  font-size: 200%;
+  color: #ffffff;
+  margin-top: 1%;
+
+}
+
+#instructionButtonDiv {
+    position: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+#instructionButton {
+    width: 150px;
+    height: 50px;
+    border-width: 0px;
+    border-radius: 10px;
+    margin: 10px;
+    font-size: 20px;
+    background-color: #79A9CD;
+    border: #79A9CD;
+    color: #ffffff;
+
 }
 
 #recordForm {
@@ -184,3 +244,4 @@ body video, body #container, body #overlay {
 * {
   font-family: Arial;
 }
+

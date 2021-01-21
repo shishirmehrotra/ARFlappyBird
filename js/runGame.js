@@ -20,6 +20,7 @@ function startGame() {
 
   flappyIsLookingForStartButton = false;
   layer.clear();
+  layer.show();
 
   window.clearInterval(timer);
   timer = window.setInterval(nextGameStep, timeScale);
@@ -54,11 +55,8 @@ function startGame() {
 
 }
 
-function transitionFromDeadToGame(){
-  var x = document.getElementById("trying");
-  x.style.display = "none";
-
-// Ensure we don't retrigger this transition
+function transitionFromDeadToGame() {
+  // Ensure we don't retrigger this transition
   // CHANGED: don't look for bird any more
   // if(flappyIsLookingForStartButton === false) return;
 
@@ -69,12 +67,12 @@ function transitionFromDeadToGame(){
 
   layerWelcome.hide();
 
-// Reset the score
+  // Reset the score
   score = 0;
   level = 1;
   layer.batchDraw();
 
-// Start the game
+  // Start the game
   startGame();
 }
 
@@ -84,28 +82,28 @@ function clearAllPipes() {
 }
 
 function stopGame() {
-// Stop running the current game and showing pipes and score
-  window.clearInterval(timer);
-  layer.clear();
-  clearAllPipes();
-  scoreText.destroy();
+  // Stop running the current game and showing pipes and score
+    window.clearInterval(timer);
+    layer.clear();
+    clearAllPipes();
+    scoreText.destroy();
 
-// Set up the new messages and show them
-  instructionText.text("Game over!");
+  // Set up the new messages and show them
+  /*instructionText.text("Game over!");
   instructionTextDetail.text("Your score is " + score + ". Fill out the form to join the PlayAR leaderboard!");
   buttonText.hide();
-  startButton.hide();
+  startButton.hide();*/
 
-  var x = document.getElementById("trying");
-  x.style.display = "block";
-  x.style.left = (welcomeX - 10) + "px";
-  x.style.top = (welcomeY + 200) + "px";
-  x.style.width = (textWidth) + "px";
+  
+  scoreForm.style.display = "block";
+  scoreForm.style.left = (welcomeX - 10) + "px";
+  scoreForm.style.top = (welcomeY + 200) + "px";
+  scoreForm.style.width = (textWidth) + "px";
 
-  layerWelcome.show();
-  layerWelcome.batchDraw();
+  /*layerWelcome.show();
+  layerWelcome.batchDraw();*/
 
-// Set up for flappy to find the button
+  // Set up for flappy to find the button
   // CHANGED: Flappy bird isn't going to look for the start button any more
   flappyIsLookingForStartButton = false;
   startButton.on('click', null);  startButton.off('click');
@@ -118,44 +116,36 @@ function stopGame() {
 }
 
 function nextLevel() {
-// Stop running the current game and showing pipes and score
-  window.clearInterval(timer);
-  layer.clear();
-  clearAllPipes();
-  scoreText.destroy();
+  // Stop running the current game and showing pipes and score
+    window.clearInterval(timer);
+    layer.clear();
+    clearAllPipes();
+    scoreText.destroy();
 
-// Set up the new messages and show them
-  instructionText.text("Great job!");
-  instructionTextDetail.text("You finished level " + level + "! Ready for the next level?");
-  buttonText.text("Next Level");
-  buttonText.show();
-  startButton.show();
+  // Set up the new messages and show them
 
-  layerWelcome.show();
-  layerWelcome.batchDraw();
-
-// Set up for flappy to find the button
+  // Set up for flappy to find the button
   flappyIsLookingForStartButton = true;
-  startButton.on('click', null);  startButton.off('click');
-  buttonText.on('click', null);   buttonText.off('click');
-  startButton.on('click', transitionFromWonToNextLevel);
-  buttonText.on('click', transitionFromWonToNextLevel);
+  //startButton.on('click', null);  startButton.off('click');
+  //buttonText.on('click', null);   buttonText.off('click');
+  //startButton.on('click', transitionFromWonToNextLevel);
+  //buttonText.on('click', transitionFromWonToNextLevel);
   nextTransitionFunction = transitionFromWonToNextLevel;
 }
 
 function transitionFromWonToNextLevel() {
 
-// Ensure we don't retrigger this transition
-  if(flappyIsLookingForStartButton === false) return;
-  flappyIsLookingForStartButton = false;
-  startButton.on('click', null);  startButton.off('click');
-  buttonText.on('click', null);   buttonText.off('click');
+  // Ensure we don't retrigger this transition
+    if(flappyIsLookingForStartButton === false) return;
+    flappyIsLookingForStartButton = false;
+    //startButton.on('click', null);  startButton.off('click');
+    //buttonText.on('click', null);   buttonText.off('click');
 
-  layerWelcome.hide();
+    //layerWelcome.hide();
 
-// Start the game
-  level = level + 1;
-  startGame();
+  // Start the game
+    level = level + 1;
+    startGame();
 }
 
 function nextGameStep() {
@@ -178,7 +168,6 @@ function nextGameStep() {
     nextLevel();
 
 }
-
 
 function getRndBetween(min, max) {
   return (Math.random() * (max - min) ) + min;

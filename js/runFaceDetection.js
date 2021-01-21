@@ -29,8 +29,8 @@
       if (result) {
         const canvas = $('#overlay').get(0)
         const dims = faceapi.matchDimensions(canvas, videoEl, true)
-        faceapi.draw.drawDetections(canvas, faceapi.resizeResults(result, dims))
-        flappy.x(result.box.x + result.box.width / 2);
+        //faceapi.draw.drawDetections(canvas, faceapi.resizeResults(result, dims))
+        flappy.x(dims.width - (result.box.x + result.box.width / 2));
         flappy.y(result.box.y + result.box.height / 2);
         layer.batchDraw();
         //console.log("x: " + result.box.x + "y: " + result.box.y);
@@ -45,6 +45,13 @@
       setTimeout(() => onPlay())
     }
 
+    var streamParameters;
+    var isSafari = false;
+    var isIPad = false;
+    var isPortrait = false;
+    var isAndroid = false;
+    var errorMessage = "";
+
     async function runFaceDetection() {
       // load face detection model
       await changeFaceDetector(TINY_FACE_DETECTOR)
@@ -53,29 +60,60 @@
       // try to access users webcam and stream the images
       // to the video element
 
+    var idealWidth  = Math.min(window.innerWidth, screen.width);
+    var idealHeight = Math.min(window.innerHeight, screen.height);
+
+    streamParameters =      
+      { video: 
+        {
+          width:  idealWidth, 
+          height: idealHeight
+        }
+      };
+
+    isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    isIPad = /^((?!chrome|android).)*iPad/i.test(navigator.userAgent);
+    isAndroid = /^((?!safari).)*Android/i.test(navigator.userAgent);
+    isPortrait = window.matchMedia("(orientation: portrait)").matches;
+      
+      //if(window.innerHeight > window.innerWidth) 
+      if(    
+        //(isAndroid && isPortrait)
+          //|| 
+        (isSafari && !isIPad && idealHeight > idealWidth)
+        )
+       { 
+          streamParameters =  
+            { video: 
+              {width: idealHeight}, 
+              height: {max: idealWidth} 
+            }
+ 
+        }
+    
+      //try {
+        const stream = await navigator.mediaDevices.getUserMedia(streamParameters);
+      //} 
+      //catch(err) {
+      //  console.log(err);
+      //  errorMessage = err;
+      //}
+      updateDebug();
 
 
-      //if(false && window.matchMedia("(orientation: portrait").matches) 
-      //  { videoWidth = window.innerHeight; videoHeight = window.innerWidth;}
-      //else 
-        //{ 
-          videoWidth = window.innerWidth; videoHeight = window.innerHeight;
-          //}
-
-
-      const stream = await navigator.mediaDevices.getUserMedia(
-        { video: {width: videoWidth, height: videoHeight} });
 //        { video: {width: {exact: videoWidth}, height: {exact: videoHeight} }} );
       const videoEl = $('#inputVideo').get(0)
       //videoEl.width = videoWidth; videoEl.height = videoHeight;
       videoEl.srcObject = stream
       sizeGame();
-      //videoEl.addEventListener('playing', startGame );
-      videoEl.addEventListener('loadedmetadata', startWelcome);
+      
+      // TO TRY: videoEl.addEventListener('loadedmetadata', startWelcome);
+      videoEl.addEventListener('playing', startWelcome);
+      const canvas = $('#overlay').get(0);
+      const dims = faceapi.matchDimensions(canvas, videoEl, true);
+      //const konvaContainer = $('#container').get(0);
+      //const dims2 = faceapi.matchDimensions(konvaContainer, videoEl, true);
 
-//      videoEl.addEventListener('playing', startWelcome);
-      const canvas = $('#overlay').get(0)
-      const dims = faceapi.matchDimensions(canvas, videoEl, true)
       videoHeight = dims.height;
       videoWidth = dims.width;
 
