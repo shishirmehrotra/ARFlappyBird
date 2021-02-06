@@ -9,22 +9,26 @@ var level = 1;
 var minTimer = 30;
 var minGapPercent = 0.2;
 
+// Update the score and redraw
 function updateScore() {
   scoreText.text("Score: " + score + " Level: " + level);
   layer.batchDraw()
 }
 
+
+// Start the game
 function startGame() {
   window.sizeGame();
+  instructions.style.display = "none";
+
   var timeScale = Math.max(100 * Math.pow(level, -0.5), minTimer);
 
-  flappyIsLookingForStartButton = false;
   layer.clear();
   layer.show();
 
   window.clearInterval(timer);
   timer = window.setInterval(nextGameStep, timeScale);
-  var numberOfPipes = 1 * level + 1;
+  var numberOfPipes = 1 * level + 2;
   var pipeWidth = 0.1;
   var spaceBetweenPipes = Math.max(0.7 * Math.pow(level, -0.5), pipeWidth*2);
   var gapPercent = Math.max(0.3 * Math.pow(level, -0.5), minGapPercent);
@@ -55,32 +59,27 @@ function startGame() {
 
 }
 
-function transitionFromDeadToGame() {
-  // Ensure we don't retrigger this transition
-  // CHANGED: don't look for bird any more
-  // if(flappyIsLookingForStartButton === false) return;
-
-
-  flappyIsLookingForStartButton = false;
-  startButton.on('click', null);  startButton.off('click');
-  buttonText.on('click', null);   buttonText.off('click');
-
-  layerWelcome.hide();
-
-  // Reset the score
-  score = 0;
-  level = 1;
-  layer.batchDraw();
-
-  // Start the game
-  startGame();
-}
-
+// Clear all the pipes
 function clearAllPipes() {
   pipes.forEach(pipe => {pipe.clearPipe();} );
   while (pipes.length) { pipes.pop(); }
 }
 
+// Transition after flappy bird dies to a new game
+function transitionFromDeadToGame() {
+  // Reset the score
+  score = 0;
+  level = 1;
+  layer.batchDraw();
+
+  instructionButton.style.display = "block";
+  scoreForm.style.display = "none";
+
+  // Start the game
+  startWelcome();
+}
+
+// Flappy bird died!
 function stopGame() {
   // Stop running the current game and showing pipes and score
     window.clearInterval(timer);
@@ -89,32 +88,24 @@ function stopGame() {
     scoreText.destroy();
 
   // Set up the new messages and show them
-  /*instructionText.text("Game over!");
-  instructionTextDetail.text("Your score is " + score + ". Fill out the form to join the PlayAR leaderboard!");
-  buttonText.hide();
-  startButton.hide();*/
 
-  
+  instructions.style.display = "block";
+  instructionButton.style.display = "none";
+  instructionTitle.textContent = "Game over!";
+  instructionDetailText.textContent = "Your score is " + score + ". Fill out the form to join the ";
+
+  const linkSpan = document.createElement("span");
+  const link = document.createElement("a");
+  link.setAttribute('href', `https://coda.io/@anika-mehrotra/playar-leaderboard`);
+  link.textContent = 'PlayAR Leaderboard';
+  linkSpan.appendChild(link);
+  instructionDetailText.appendChild(linkSpan);
+  instructionDetailText.innerHTML += "!";
+
   scoreForm.style.display = "block";
-  scoreForm.style.left = (welcomeX - 10) + "px";
-  scoreForm.style.top = (welcomeY + 200) + "px";
-  scoreForm.style.width = (textWidth) + "px";
-
-  /*layerWelcome.show();
-  layerWelcome.batchDraw();*/
-
-  // Set up for flappy to find the button
-  // CHANGED: Flappy bird isn't going to look for the start button any more
-  flappyIsLookingForStartButton = false;
-  startButton.on('click', null);  startButton.off('click');
-  buttonText.on('click', null);   buttonText.off('click');
-  //startButton.on('click', transitionFromDeadToGame);
-  buttonText.on('click', transitionFromDeadToGame);
-
-  nextTransitionFunction = transitionFromDeadToGame;
-
 }
 
+// Flappy bird passed the level, go ahead to the next level
 function nextLevel() {
   // Stop running the current game and showing pipes and score
     window.clearInterval(timer);
@@ -123,38 +114,23 @@ function nextLevel() {
     scoreText.destroy();
 
   // Set up the new messages and show them
+  level = level + 1;
 
-  // Set up for flappy to find the button
-  flappyIsLookingForStartButton = true;
-  //startButton.on('click', null);  startButton.off('click');
-  //buttonText.on('click', null);   buttonText.off('click');
-  //startButton.on('click', transitionFromWonToNextLevel);
-  //buttonText.on('click', transitionFromWonToNextLevel);
-  nextTransitionFunction = transitionFromWonToNextLevel;
+  instructions.style.display = "block";
+  instructionTitle.textContent = "Congratulations!";
+  instructionDetailText.textContent = "You made it to the next level with a score of " + score + ". Press the button for a more challenging workout.";
+  instructionButton.textContent = "Start Level " + level;
+  document.getElementById("instructionButton").onclick = startGame;
 }
 
-function transitionFromWonToNextLevel() {
 
-  // Ensure we don't retrigger this transition
-    if(flappyIsLookingForStartButton === false) return;
-    flappyIsLookingForStartButton = false;
-    //startButton.on('click', null);  startButton.off('click');
-    //buttonText.on('click', null);   buttonText.off('click');
-
-    //layerWelcome.hide();
-
-  // Start the game
-    level = level + 1;
-    startGame();
-}
-
+// Runs every time tick to move the pipes and check where flappy is
 function nextGameStep() {
   // Move all the pipes to the left
-  var pipeMove = 0.01;
-  pipes.forEach(pipe => pipe.movePipe(pipeMove));
+    var pipeMove = 0.01;
+    pipes.forEach(pipe => pipe.movePipe(pipeMove));
 
-  // Check if the bird is hitting any pipe
-    // For every pipe
+  // Check if the bird is hitting any pipe. For every pipe...
     pipes.forEach(
       pipe => {
         if(pipe.checkPipeHit(flappy.x(), flappy.y(), flappyW, flappyH)) 
@@ -163,12 +139,14 @@ function nextGameStep() {
     );
 
   // If all pipes have scored, stop the game, and show option for next level
-  var pipesDone = pipes.filter(pipe => pipe.isScored);
-  if(pipesDone.length === pipes.length && pipes.length > 0)
-    nextLevel();
+    var pipesDone = pipes.filter(pipe => pipe.isScored);
+    if(pipesDone.length === pipes.length && pipes.length > 0)
+      nextLevel();
 
 }
 
+
+// Helper function to get random numbers in a range
 function getRndBetween(min, max) {
   return (Math.random() * (max - min) ) + min;
 }

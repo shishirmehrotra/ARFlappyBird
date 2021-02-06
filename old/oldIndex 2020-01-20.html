@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+
+
 <head>
 	<script src="https://unpkg.com/konva@7.1.3/konva.min.js">	</script>
 	<script src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js">	</script>
@@ -14,7 +16,7 @@
 
 
 	<meta charset="utf-8" />
-	<title>PlayAR</title>
+	<title>Flappy Bird</title>
 	<style>
 		body {
 			margin: 0;
@@ -25,7 +27,7 @@
 	</style>
 
 	<!-- Appzi: Capture Insightful Feedback -->
-	<!--script async src="https://w.appzi.io/w.js?token=8XFnN">
+	<script async src="https://w.appzi.io/w.js?token=8XFnN">
 	</script>
 	<!-- End Appzi -->
 
@@ -38,8 +40,13 @@
   gtag('js', new Date());
 
   gtag('config', 'G-BGTE1MCQTY');
+
 	</script>
+
 </head>
+
+<script src="js/script.js"></script>
+
 <body>
 	<video class='video' onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
 	<canvas class='video' id="overlay"></canvas>
@@ -54,42 +61,19 @@
     </div>    
     <div class = 'scoreForm' id='scoreForm'>
       <form id="recordForm" method="post" target="hiddenFrame">
-        <h1 class = "formLabel">Name:</h1><textarea id="NameInput" class ="formInput" name="Name"></textarea>
-        <h1 class = "formLabel">Email:</h1><textarea id="EmailInput" class ="formInput" type="email" name="Email" ></textarea>
-        <h1 class = "formLabel">Feedback:</h1><textarea id="FeedbackInput" class ="formInput" name="Feedback" ></textarea>
+        <h1 class = "formLabel">Name:</h1><input id="NameInput" class ="formInput" name="Name">
+        <h1 class = "formLabel">Email:</h1><input id="EmailInput" class ="formInput" type="email" name="Email" >
+        <h1 class = "formLabel">Feedback:</h1><input id="FeedbackInput" class ="formInput" name="Feedback" >
       </form>
 
       <div id="buttonRow">
-        <button id="skipButton" class = "formButton">Skip</button>
         <button id="submitButton" class = "formButton">Submit</button>
+        <button id="skipButton" class = "formButton">Skip</button>
       </div>
       
     </div>
   </div>
-  <!--div class = "scrolling text"  id = "scrolling text">
-    <marquee behavior="scroll" BGCOLOR=#79A9CD loop="infinite" scrollamount = "20" direction = "right">
-      <span>Good job!</span>
-      <span>You can do it! </span>
-      <span>Keep Going! </span>
-      <span>You're gonna win! </span>
-      <span>Hooray!!!! </span>
-      <span>I belive in you! </span>
-      <span>Good job!</span>
-      <span>You can do it! </span>
-      <span>Keep Going! </span>
-      <span>You're gonna win! </span>
-      <span>Hooray!!!! </span>
-      <span>I belive in you! </span>
-      <span>Good job!</span>
-      <span>You can do it! </span>
-      <span>Keep Going! </span>
-      <span>You're gonna win! </span>
-      <span>Hooray!!!! </span>
-      <span>I belive in you! </span>
-    </marquee-->
-    
-  </div>
-  <div id = "debug"></div>
+  <div id = "debug">Debug</div>
   <script src="js/setup.js"></script>
 	<script src="js/welcome.js">	</script>
 	<script src="js/pipe.js">	</script>
@@ -122,18 +106,52 @@
       });
        
       window.sizeGame = function sizeGame() {
+        
+        // New code from Fil
+          /*
+          const videoEl = document.querySelector('#inputVideo');
+          videoEl.style.cssText = `width:${windowWidth}px; height: ${windowHeight}px`;
+          const overlayDiv = document.querySelector('#overlay');
+          overlayDiv.style.cssText = `width:${windowWidth}px; height: ${windowHeight}px`;
+          */
+
+
+        // MARGIN DIV APPROACH
+        //const marginDiv = $('#inputVideo').get(0).getBoundingClientRect();
+        //windowWidth = marginDiv.width;
+        //windowHeight = marginDiv.height;
+        //stage.width(marginDiv.width);
+        // stage.height(marginDiv.height);
+
+      /* stage.container().style.position = 'absolute';
+        stage.container().style.top = '0';
+        stage.container().style.left = '0';
+        stage.container().style.top   = marginDiv.top;
+        stage.container().style.left  = marginDiv.left + window.scrollX;
+        stage.container().style.width = marginDiv.width;
+        stage.container().style.height = marginDiv.height;
+  */
+        //windowWidth = marginDiv.width;
+        //windowHeight = marginDiv.height;
+
+        // Size everything to the video size
+        
+
+        // Set based on Window dimensions
+        // stage.width(windowWidth);
+        // stage.height(windowHeight);
+        // videoWidth = windowWidth;
+        // videoHeight = windowHeight;
+        
         videoWidth = document.querySelector('#inputVideo').videoWidth;
         videoHeight = document.querySelector('#inputVideo').videoHeight;
         stage.width(Math.min(videoWidth, window.innerWidth));
         stage.height(Math.min(videoHeight, window.innerHeight));
-        if (videoWidth > 0)  {
-          if (isIOS) 
-               {instructions.style.width = Math.min(videoWidth, window.innerWidth) +"px"}  
-          else {instructions.style.width = Math.min(videoWidth, window.innerWidth, screen.width) +"px"} 
-        }
+        if (videoWidth > 0)  {instructions.style.width = Math.min(videoWidth, window.innerWidth) +"px" }
         else                 {instructions.style.width = window.innerWidth + "px";}
         
         updateDebug();
+
       }   
 
       document.querySelector('#inputVideo').addEventListener('resize', window.sizeGame);
@@ -144,6 +162,9 @@
 
       stage.add(layer);
 
+      //var layerWelcome = new Konva.Layer();
+      //stage.add(layerWelcome);
+
       // Set up Flappy 
       var flappyY = 50;
       var flappyX = 0.25 * window.innerWidth;
@@ -153,7 +174,7 @@
       var flappy;
 
 
- 
+
       imageObj.onload = function () {
         flappy = new Konva.Image({
           x: 0.25*window.innerWidth,
@@ -162,7 +183,9 @@
           width: flappyW,
           height: flappyH,
         });
-
+        //flappy.id('flappyID');
+        //var flappyEl = document.getElementById("flappyID");
+        //flappyEl.style.zIndex = "11";
         layer.add(flappy);
         layer.batchDraw();
       };
@@ -177,6 +200,7 @@
           flappy.y(flappy.y()+10);
 
         }
+        //console.log("keyHandler" + flappy.y());
         layer.batchDraw();
 
       }
