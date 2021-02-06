@@ -108,14 +108,6 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
 
   }
 
-
-// Was this pipe hit?
-/*
-  this.checkPipeHit = function (x, y, w, h) {
-    return false;
-  }
-  */
-
 // Was this pipe hit?
   this.checkPipeHit = function (fX, fY, fW, fH) {
     
