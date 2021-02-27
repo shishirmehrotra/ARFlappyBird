@@ -261,3 +261,15 @@ marquee {
   justify-content: space-between;
   color: white;
 }
+
+.chooseGame {
+  border-radius: 10px;
+  display: none;
+}
+.gameOptions {
+  display: contents;
+}
+.gameImages {
+  height: 30vh;
+  padding: 1vw;
+}

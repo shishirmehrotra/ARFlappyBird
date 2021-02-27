@@ -9,6 +9,9 @@ var SCORES_COLUMN_NAME = 'c-L8xMncGpy4';
 var SCORES_COLUMN_EMAIL = 'c-EJi3f1U2cn';
 var SCORES_COLUMN_FEEDBACK = 'c-4IPCRzU-gF';
 var SCORES_COLUMN_DEBUG_INFO = 'c-SzT4y15ZnN';
+var SCORES_COLUMN_GAME = 'c--jcceXXB69';
+var SCORES_COLUMN_VERSION = 'c-PfoaOPXZP0';
+var SCORES_COLUMN_LEVEL = 'c-btJMu6IEIK';
 
 
 var CodaAPI_IOS = new Coda('head:77d4b7b7-a1a8-444a-b26b-f3d71a0f3b87');
@@ -75,7 +78,10 @@ function submitFormData() {
       score,
       form.elements["NameInput"].value,
       form.elements["EmailInput"].value,
-      form.elements["FeedbackInput"].value
+      form.elements["FeedbackInput"].value,
+      game,
+      version,
+      level
     );
   }
   else {
@@ -85,7 +91,10 @@ function submitFormData() {
       score,
       form.elements["NameInput"].value,
       form.elements["EmailInput"].value,
-      form.elements["FeedbackInput"].value
+      form.elements["FeedbackInput"].value,
+      game,
+      version,
+      level
     );
   }   
 
@@ -99,18 +108,22 @@ function submitEmptyForm() {
 }
 
 
-async function submitScore(id, uuid, score, name, email, feedback) {
+async function submitScore(id, uuid, score, name, email, feedback, game, version, level) {
   var rows = [];
 
    rows.push({
       cells: [
-        { column: SCORES_COLUMN_ID,       value: id },
-        { column: SCORES_COLUMN_UUID,     value: uuid },
-        { column: SCORES_COLUMN_SCORE,    value: score },
-        { column: SCORES_COLUMN_NAME,     value: name },
-        { column: SCORES_COLUMN_EMAIL,    value: email },
-        { column: SCORES_COLUMN_FEEDBACK, value: feedback },
+        { column: SCORES_COLUMN_ID,         value: id },
+        { column: SCORES_COLUMN_UUID,       value: uuid },
+        { column: SCORES_COLUMN_SCORE,      value: score },
+        { column: SCORES_COLUMN_NAME,       value: name },
+        { column: SCORES_COLUMN_EMAIL,      value: email },
+        { column: SCORES_COLUMN_FEEDBACK,   value: feedback },
         { column: SCORES_COLUMN_DEBUG_INFO, value: debugString },
+        { column: SCORES_COLUMN_GAME,       value: game },
+        { column: SCORES_COLUMN_VERSION,    value: version },
+        { column: SCORES_COLUMN_LEVEL,      value: level },
+
       ],
     });
  
@@ -118,8 +131,8 @@ async function submitScore(id, uuid, score, name, email, feedback) {
   var result = await CodaAPI.upsertRows(SCORES_DOC_ID, SCORES_TABLE_ID, {}, body);
 }
 
-async function submitScoreIOS(id, uuid, score, name, email, feedback) {
-  submitScore(id, uuid, score, name, email, feedback);
+async function submitScoreIOS(id, uuid, score, name, email, feedback, game, version, level) {
+  submitScore(id, uuid, score, name, email, feedback, game, version, level);
   var rows = [];
 
    rows.push({
@@ -131,6 +144,7 @@ async function submitScoreIOS(id, uuid, score, name, email, feedback) {
         { column: SCORES_COLUMN_EMAIL_IOS,    value: email },
         { column: SCORES_COLUMN_FEEDBACK_IOS, value: feedback },
         { column: SCORES_COLUMN_DEBUG_INFO_IOS, value: debugString },
+
       ],
     });
  

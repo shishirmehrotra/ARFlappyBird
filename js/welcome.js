@@ -18,7 +18,33 @@ function startWelcome() {
 
   instructions.style.display = "block";
   instructionTitle.textContent = "Welcome to PlayAR!";
-  instructionDetailText.textContent = "The game that uses augmented reality to get you fit! Do pushups or squats to keep Flappy between the pipes.";
-  instructionButton.textContent = "Start Playing";
-  document.getElementById("instructionButton").onclick = startGame; 
+  instructionDetailText.style.display = "block";
+  instructionDetailText.textContent = "The game that uses augmented reality to get you fit!";
+  instructionButton.textContent = "Choose a Game";
+  document.getElementById("instructionButton").onclick = chooseGame; 
+}
+
+function chooseGame () {
+  game = null;
+  layer.show();
+  score = 0; 
+  level = 1;
+  chooseGameDiv.style.display = "contents";
+  flappyBirdGameOption.style.display = "contents"; 
+  instructionTitle.textContent = "Choose a Game to Play!";
+  instructionDetailText.style.display = "none";
+  instructionButton.style.display = "none";
+  flappyBirdGameOption.onclick = startFlappyGame; 
+  pongGameOption.onclick = () => {startPongGame(false)};
+  brickBreakerGameOption.onclick = () => {startPongGame(true)};
+
+  if (treatAsVerticalPhone){
+    $('.gameImages').css('width',  '')
+    $('.gameImages').css('height', '15vh')
+  }
+  else {
+    $('.gameImages').css('width',  '')
+    $('.gameImages').css('height', '20vh')
+  }
+
 }

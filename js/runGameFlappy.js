@@ -1,12 +1,14 @@
 var timer;
-var pipes = [];
 var score = 0;
 var scoreText;
 var instructionText;
 var instructionTextDetail;
-var buttonText;
-var level = 1;
 var minTimer = 30;
+var level = 1;
+var buttonText;
+var game;
+
+var pipes = [];
 var minGapPercent = 0.2;
 
 // Update the score and redraw
@@ -15,20 +17,22 @@ function updateScore() {
   layer.batchDraw()
 }
 
+var timeScale;
 
 // Start the game
-function startGame() {
+function startFlappyGame() {
   window.sizeGame();
   instructions.style.display = "none";
-
-  var timeScale = Math.max(100 * Math.pow(level, -0.5), minTimer);
+  flappyBirdGameOption.style.display = "none";
+  game = "Flappy Bird";
+  timeScale = Math.max(100 * Math.pow(level, -0.5), minTimer);
 
   layer.clear();
   layer.show();
 
   window.clearInterval(timer);
-  timer = window.setInterval(nextGameStep, timeScale);
-  var numberOfPipes = 1 * level + 2;
+  timer = window.setInterval(nextGameStepFlappy, timeScale);
+  var numberOfPipes = 1 * level + 1;
   var pipeWidth = 0.1;
   var spaceBetweenPipes = Math.max(0.7 * Math.pow(level, -0.5), pipeWidth*2);
   var gapPercent = Math.max(0.3 * Math.pow(level, -0.5), minGapPercent);
@@ -49,7 +53,7 @@ function startGame() {
       "Score: " + score + " Level: " + level,
     fontSize: 20,
     fontFamily: 'Arial',
-    fill: '#ffffff',
+    fill: '#000000',
     width: 100,
     align: 'center',
   });
@@ -76,11 +80,11 @@ function transitionFromDeadToGame() {
   scoreForm.style.display = "none";
 
   // Start the game
-  startWelcome();
+  chooseGame();
 }
 
 // Flappy bird died!
-function stopGame() {
+function stopFlappyGame() {
   // Stop running the current game and showing pipes and score
     window.clearInterval(timer);
     layer.clear();
@@ -90,6 +94,8 @@ function stopGame() {
   // Set up the new messages and show them
 
   instructions.style.display = "block";
+  chooseGameDiv.style.display = "none";
+  instructionDetailText.style.display = "block";
   instructionButton.style.display = "none";
   instructionTitle.textContent = "Game over!";
   instructionDetailText.textContent = "Your score is " + score + ". Fill out the form to join the ";
@@ -106,7 +112,7 @@ function stopGame() {
 }
 
 // Flappy bird passed the level, go ahead to the next level
-function nextLevel() {
+function nextLevelFlappy() {
   // Stop running the current game and showing pipes and score
     window.clearInterval(timer);
     layer.clear();
@@ -118,14 +124,17 @@ function nextLevel() {
 
   instructions.style.display = "block";
   instructionTitle.textContent = "Congratulations!";
+  instructionDetailText.style.display = "block";
+  chooseGameDiv.style.display = "none";
   instructionDetailText.textContent = "You made it to the next level with a score of " + score + ". Press the button for a more challenging workout.";
   instructionButton.textContent = "Start Level " + level;
-  document.getElementById("instructionButton").onclick = startGame;
+  instructionButton.style.display = "block";
+  document.getElementById("instructionButton").onclick = startFlappyGame;
 }
 
 
 // Runs every time tick to move the pipes and check where flappy is
-function nextGameStep() {
+function nextGameStepFlappy() {
   // Move all the pipes to the left
     var pipeMove = 0.01;
     pipes.forEach(pipe => pipe.movePipe(pipeMove));
@@ -134,14 +143,14 @@ function nextGameStep() {
     pipes.forEach(
       pipe => {
         if(pipe.checkPipeHit(flappy.x(), flappy.y(), flappyW, flappyH)) 
-          {stopGame(); return;};
+          {stopFlappyGame(); return;};
       }
     );
 
   // If all pipes have scored, stop the game, and show option for next level
     var pipesDone = pipes.filter(pipe => pipe.isScored);
     if(pipesDone.length === pipes.length && pipes.length > 0)
-      nextLevel();
+      nextLevelFlappy();
 
 }
 

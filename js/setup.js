@@ -3,7 +3,15 @@ var instructions = document.getElementById("instructions");
 var instructionTitle = document.getElementById("instructionTitle");
 var instructionDetailText = document.getElementById("instructionDetailText");
 var instructionButton = document.getElementById("instructionButton");
+var chooseGameDiv = document.getElementById("chooseGame");
+var flappyBirdGameOption = document.getElementById("flappyBird");
+var pongGameOption = document.getElementById("pong");
+var brickBreakerGameOption = document.getElementById("brickBreaker");
 var debug = document.getElementById("debug");
+var gameOptions = document.getElementsByClassName("gameOptions");
+var gameImages = document.getElementsByClassName("gameImages");
+var treatAsVerticalPhone = false;
+var treatAsIPad = false;
 
 var debugString = ""
 

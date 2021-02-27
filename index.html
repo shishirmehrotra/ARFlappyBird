@@ -49,6 +49,11 @@
 
 		<div id = 'instructionTitle'>Welcome</div>
 		<div id = 'instructionDetailText'>Do pushups to stay in between the pipes. Press start to begin.</div>
+    <div class = 'chooseGame' id = 'chooseGame'>
+      <button id = 'flappyBird' class="gameOptions" onclick="startFlappyGame"><img class="gameImages" src = 'flappyBirdIcon.png'/></button>
+      <button id = 'pong' class="gameOptions" onclick="startFlappyGame"><img class="gameImages" src = 'pongIcon.png'/></button>
+      <button id = 'brickBreaker' class="gameOptions" onclick="startFlappyGame"><img class="gameImages" src = 'brickBreaker.png'/></button> 
+    </div>
     <div id = 'instructionButtonDiv'>
       <button id = 'instructionButton'>Start</button>
     </div>    
@@ -66,6 +71,7 @@
       
     </div>
   </div>
+  
   <!--div class = "scrolling text"  id = "scrolling text">
     <marquee behavior="scroll" BGCOLOR=#79A9CD loop="infinite" scrollamount = "20" direction = "right">
       <span>Good job!</span>
@@ -93,7 +99,9 @@
   <script src="js/setup.js"></script>
 	<script src="js/welcome.js">	</script>
 	<script src="js/pipe.js">	</script>
-	<script src="js/runGame.js">	</script>
+  <script src="js/brick.js"></script>
+	<script src="js/runGameFlappy.js">	</script>
+  <script src = "js/pong.js"></script>
 	<script src="js/runFaceDetection.js">	</script>
 
 <script src = "js/form.js"></script>
@@ -101,11 +109,15 @@
 </body>
 
 <script>
+
+    var version;
   
     $(document).ready(function() {
       initFaceDetectionControls()
       runFaceDetection()
     })
+
+      version = "PlayAR";
     
       var windowWidth = getComputedStyle(document.documentElement).width;
       var windowHeight = getComputedStyle(document.documentElement).height;
@@ -143,6 +155,10 @@
       var layer = new Konva.Layer();
 
       stage.add(layer);
+
+      var layerPong = new Konva.Layer();
+
+      stage.add(layerPong);
 
       // Set up Flappy 
       var flappyY = 50;

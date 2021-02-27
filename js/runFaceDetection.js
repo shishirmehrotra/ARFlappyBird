@@ -10,6 +10,9 @@
 
 
 
+    var result;
+    var now = new Date();
+  
 
     async function onPlay() {
       const videoEl = $('#inputVideo').get(0)
@@ -23,7 +26,7 @@
       const ts = Date.now()
 
       // Run the face detection
-      const result = await faceapi.detectSingleFace(videoEl, options)
+      result = await faceapi.detectSingleFace(videoEl, options)
 
       updateTimeStats(Date.now() - ts)
 
@@ -36,16 +39,32 @@
         //console.log("x: " + result.box.x + "y: " + result.box.y);
 
         // Set flappy bird position to the center of the face
-        flappy.x(dims.width - (result.box.x + result.box.width / 2));
-        flappy.y(result.box.y + result.box.height / 2);
-        layer.batchDraw();
+        if (game === "Pong" || game === "Brick Breaker") {
+          const oldX = paddle.x();
+          const oldY = paddle.y();
+          //paddle.x(pongX);
+          const newY = result.box.y + result.box.height / 2;
+          if (Math.abs(newY - oldY) > ballRadius ) {
+            paddle.y(result.box.y + result.box.height / 2 - paddle.height()/2);
+            paddle.draw();
+            layerPong.batchDraw();
+          }
+
+          //console.log(new Date(Date.now()).toLocaleTimeString() + " Paddle moved from (" + oldX + ", " + oldY + ") to (" + paddle.x() + ", "+ paddle.y() + ")");
+
+        }
+        else {
+          flappy.x(dims.width - (result.box.x + result.box.width / 2));
+          flappy.y(result.box.y + result.box.height / 2);
+          layer.batchDraw();
+        }
       }
 
       setTimeout(() => onPlay())
     }
 
     var streamParameters;
-    var isMac;;
+    var isMac;
     var isSafari = false;
     var isIPad = false;
     var isPortrait = false;
@@ -94,6 +113,7 @@
           && idealHeight > idealWidth)
         )
        { 
+          treatAsVerticalPhone = true;
           streamParameters =  
             { video: 
               {width: idealHeight, 
@@ -107,6 +127,8 @@
       //  so switched the logic to be about iOS portrait vs landscape
       
       if (isIOS && idealWidth > idealHeight) {
+        treatAsIPad = true;
+
         streamParameters =  
             { video: 
               {width: Math.max(window.innerWidth, screen.width), 
