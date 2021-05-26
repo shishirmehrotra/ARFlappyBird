@@ -50,6 +50,18 @@ function pongPaddle() {
 }
 
 function startPongGame (showBricksParameter) {
+  flappyVideo.style.display = "none";
+  pongVideo.style.display = "none";
+  brickVideo.style.display = "none";
+  welcomeMusic.pause();
+
+  if (game === "Pong") {
+    pongMusic.play();
+  }
+  else {
+    brickMusic.play();
+  }
+
   showBricks = showBricksParameter;
   if (paddle != null) paddle.destroy();
   if (ball != null) ball.destroy();
@@ -59,7 +71,8 @@ function startPongGame (showBricksParameter) {
 
   pongSlope = 1;
   pongDirection = 1;
-  pongSpeed = videoHeight * (0.03);
+  //pongSpeed = videoHeight * (0.03);
+  pongSpeed = videoHeight * (0.05);
 
   //pongSpeed = videoWidth * (0.03 + level * 0.0008);
   //pongSpeed = 40 + level*10;
@@ -78,6 +91,15 @@ function startPongGame (showBricksParameter) {
   }
   else {
     game = "Brick Breaker";
+  }
+
+  if (game === "Pong") {
+    pongMusic.play();
+    brickMusic.pause();
+  }
+  else {
+    brickMusic.play();
+    pongMusic.pause();
   }
 
   layer.hide();
@@ -101,7 +123,7 @@ function startPongGame (showBricksParameter) {
 
   if (showBricks === true) {
     bricks = []; 
-    for (var j = 0; j < level; j++) {
+    for (var j = 0; j < level+1; j++) {
       for (var i = 0; i < 5; i++ ) {
         var b = new Brick(.8 - j * 0.04 , i*0.2 , 0.04 , 0.2);
         bricks.push(b);
@@ -217,6 +239,9 @@ function stopPongGame() {
     scorePongText.destroy();
     clearAllBricks();
 
+    gameOverSound.play();
+    
+
   // Set up the new messages and show them
 
   instructions.style.display = "block";
@@ -244,6 +269,8 @@ function nextLevelPong() {
   layerPong.hide()
   scorePongText.destroy();
   clearAllBricks();
+
+  nextLevelSound.play();
 
   // Set up the new messages and show them
   level = level + 1;

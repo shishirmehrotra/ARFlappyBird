@@ -21,6 +21,13 @@ var timeScale;
 
 // Start the game
 function startFlappyGame() {
+  flappyVideo.style.display = "none";
+  pongVideo.style.display = "none";
+  brickVideo.style.display = "none";
+
+  welcomeMusic.pause();
+  flappyMusic.play();
+
   window.sizeGame();
   instructions.style.display = "none";
   flappyBirdGameOption.style.display = "none";
@@ -91,6 +98,8 @@ function stopFlappyGame() {
     clearAllPipes();
     scoreText.destroy();
 
+    gameOverSound.play();
+
   // Set up the new messages and show them
 
   instructions.style.display = "block";
@@ -119,6 +128,8 @@ function nextLevelFlappy() {
     clearAllPipes();
     scoreText.destroy();
 
+    nextLevelSound.play();
+
   // Set up the new messages and show them
   level = level + 1;
 
@@ -143,6 +154,7 @@ function nextGameStepFlappy() {
     pipes.forEach(
       pipe => {
         if(pipe.checkPipeHit(flappy.x(), flappy.y(), flappyW, flappyH)) 
+          
           {stopFlappyGame(); return;};
       }
     );

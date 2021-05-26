@@ -87,6 +87,8 @@ function Brick(xPercent, yPercent, wPercent, hPercent) {
 
       this.setColor();
       score += 10 * level;
+      
+      brickHitSound.play();
       updateScorePong();
 
       // Check strength

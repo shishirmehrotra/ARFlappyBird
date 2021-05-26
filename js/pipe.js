@@ -103,6 +103,7 @@ function Pipe(xPercent, yPercent, gapPercent, widthPercent) {
       score += 10 * level;
       this.isScored = true;
       updateScore();
+      pipeScoreSound.play();
 
     }
 

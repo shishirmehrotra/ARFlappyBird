@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<script src="https://unpkg.com/konva@7.1.3/konva.min.js">	</script>
-	<script src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js">	</script>
-	<script src="js/faceDetectionControls.js">	</script>
+	<script src="https://unpkg.com/konva@7.1.3/konva.min.js">
+
+	</script>
+	<script src="https://unpkg.com/face-api.js@0.22.2/dist/face-api.min.js">
+
+	</script>
+	<script src="js/faceDetectionControls.js">
+
+	</script>
 	<link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js">	</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js">	</script>
-	<script src="https://unpkg.com/konva@7.1.3/konva.min.js">	</script>
-	<script src="https://cdn.coda.io/external/scratch/api-sdks/coda-browser-sdk-001.js">	</script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js">
+
+	</script>
+	<script src="https://unpkg.com/konva@7.1.3/konva.min.js">
+
+	</script>
+	<script src="https://cdn.coda.io/external/scratch/api-sdks/coda-browser-sdk-001.js">
+
+	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 
@@ -31,6 +46,7 @@
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-BGTE1MCQTY">
+
 	</script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
@@ -40,6 +56,7 @@
   gtag('config', 'G-BGTE1MCQTY');
 	</script>
 </head>
+
 <body>
 	<video class='video' onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
 	<canvas class='video' id="overlay"></canvas>
@@ -47,13 +64,30 @@
 	</div>
 	<div class='instructions' id='instructions'>
 
-		<div id = 'instructionTitle'>Welcome</div>
-		<div id = 'instructionDetailText'>Do pushups to stay in between the pipes. Press start to begin.</div>
-    <div class = 'chooseGame' id = 'chooseGame'>
-      <button id = 'flappyBird' class="gameOptions" onclick="startFlappyGame"><img class="gameImages" src = 'flappyBirdIcon.png'/></button>
+		<div id='instructionTitle'>Welcome</div>
+		<div id='instructionDetailText'>Do pushups to stay in between the pipes. Press start to begin.
+
+		</div>
+		<div class='chooseGame' id='chooseGame'>
+			<button id = 'flappyBird' class="gameOptions" onclick="startFlappyGame"><img class="gameImages" src = 'flappyBirdIcon.png'/></button>
       <button id = 'pong' class="gameOptions" onclick="startFlappyGame"><img class="gameImages" src = 'pongIcon.png'/></button>
       <button id = 'brickBreaker' class="gameOptions" onclick="startFlappyGame"><img class="gameImages" src = 'brickBreaker.png'/></button> 
     </div>
+			<div  class='instructionVideoContainer' id='flappyVideoContainer'>
+				<video width='50%' autoplay muted loop class='instructionVideo' >
+					<source src="flappyInstruction.mp4" type="video/mp4"> Your browser does not support the video tag.
+				</video>
+			</div>
+			<div class='instructionVideoContainer' id='pongVideoContainer'>
+				<video width='50%' autoplay muted loop class='instructionVideo' >
+					<source src="pongInstruction.mp4" type="video/mp4"> Your browser does not support the video tag.
+				</video>
+			</div>
+			<div class='instructionVideoContainer' id='brickVideoContainer'>
+				<video height='50%' autoplay muted loop class='instructionVideo' >
+					<source src="brickInstruction.mp4" type="video/mp4"> Your browser does not support the video tag.
+				</video>
+			</div>
     <div id = 'instructionButtonDiv'>
       <button id = 'instructionButton'>Start</button>
     </div>    
